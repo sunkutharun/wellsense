@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>WellSense Community | The Digital Sanctuary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Plus_Jakarta_Sans:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "surface-container-low": "#f3f4f5","on-secondary-fixed-variant": "#693b21","error-container": "#ffdad6","error": "#ba1a1a","on-background": "#191c1d","secondary-container": "#feba97","surface-tint": "#52652a","outline": "#76786b","on-primary-fixed": "#141f00","outline-variant": "#c6c8b8","on-secondary-fixed": "#341100","secondary-fixed": "#ffdbca","on-primary-fixed-variant": "#3b4d14","on-secondary-container": "#79482d","secondary-fixed-dim": "#fbb795","primary-fixed-dim": "#b8cf88","surface-dim": "#d9dadb","primary-fixed": "#d4eca2","on-tertiary": "#ffffff","surface-bright": "#f8f9fa","on-error-container": "#93000a","on-surface": "#191c1d","tertiary-fixed-dim": "#ffb77d","secondary": "#855236","on-surface-variant": "#45483c","surface-container-lowest": "#ffffff","surface": "#f8f9fa","background": "#f8f9fa","on-tertiary-fixed-variant": "#6e3900","on-primary": "#ffffff","tertiary": "#633300","primary": "#33450d","surface-container": "#edeeef","surface-variant": "#e1e3e4","surface-container-high": "#e7e8e9","primary-container": "#4a5d23","on-tertiary-container": "#ffbf8d","on-error": "#ffffff","on-tertiary-fixed": "#2f1500","on-secondary": "#ffffff","on-primary-container": "#bed58e","tertiary-container": "#854600","tertiary-fixed": "#ffdcc3","inverse-primary": "#b8cf88","inverse-on-surface": "#f0f1f2","inverse-surface": "#2e3132","surface-container-highest": "#e1e3e4"
+        },
+        "borderRadius": {"DEFAULT": "0.25rem","lg": "1rem","xl": "1.5rem","full": "9999px"},
+        "fontFamily": {"headline": ["Manrope"],"body": ["Plus Jakarta Sans"],"label": ["Inter"]}
+      }
+    }
+  }
+</script>
+
+<!-- ═══════════════════════════════════════════════════════
+     ANIMATION ENHANCEMENT LAYER — does not touch layout,
+     colors, spacing or content of the original design.
+     ═══════════════════════════════════════════════════════ -->
+<style>
+  /* 1. Smooth scroll + no horizontal overflow */
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+  /* ── 2. Scroll progress bar ── */
+  #ws-progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: linear-gradient(90deg, #33450d 0%, #b8cf88 60%, #feba97 100%);
+    z-index: 9999; border-radius: 0 2px 2px 0;
+    transition: width .08s linear;
+    pointer-events: none;
+  }
+
+  /* ── 3. Scroll-reveal base states ── */
+  .ws-reveal {
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity .7s cubic-bezier(.22,.68,0,1.2),
+                transform .7s cubic-bezier(.22,.68,0,1.2);
+  }
+  .ws-reveal.ws-from-left  { transform: translateX(-52px); }
+  .ws-reveal.ws-from-right { transform: translateX(52px); }
+  .ws-reveal.ws-scale      { transform: scale(.94) translateY(18px); }
+  .ws-reveal.ws-visible    { opacity: 1; transform: none !important; }
+  .ws-reveal.ws-d1 { transition-delay: .08s; }
+  .ws-reveal.ws-d2 { transition-delay: .18s; }
+  .ws-reveal.ws-d3 { transition-delay: .28s; }
+  .ws-reveal.ws-d4 { transition-delay: .38s; }
+
+  /* ── 4. Nav glassmorphism & sticky enhancement ── */
+  nav.fixed {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: box-shadow .35s ease, background .35s ease;
+  }
+  nav.fixed.ws-scrolled {
+    box-shadow: 0 2px 28px rgba(51,69,13,.1);
+    background: rgba(255,255,255,.92) !important;
+  }
+
+  /* ── 5. Nav link animated underline ── */
+  nav a {
+    position: relative;
+    text-decoration: none;
+    transition: color .25s ease;
+  }
+  nav a::after {
+    content: '';
+    position: absolute; bottom: -2px; left: 0;
+    width: 0; height: 2px;
+    background: #33450d;
+    border-radius: 99px;
+    transition: width .3s cubic-bezier(.25,.46,.45,.94);
+  }
+  nav a:hover::after { width: 100%; }
+  nav a.border-b-2::after { width: 100%; }
+
+  /* ── 6. Button microinteractions ── */
+  button, .btn {
+    transition: transform .22s cubic-bezier(.34,1.56,.64,1),
+                box-shadow .22s ease,
+                opacity .2s ease !important;
+  }
+  button:hover {
+    transform: translateY(-3px) scale(1.025);
+    box-shadow: 0 8px 24px rgba(51,69,13,.25);
+  }
+  button:active { transform: scale(.96) !important; }
+
+  /* Dark-bg section buttons keep lighter glow */
+  .bg-primary button:hover,
+  .bg-stone-900 button:hover {
+    box-shadow: 0 8px 28px rgba(0,0,0,.3);
+  }
+
+  /* ── 7. Card hover effects ── */
+  /* Program image cards */
+  .rounded-\[2\.5rem\] {
+    transition: transform .38s cubic-bezier(.34,1.56,.64,1),
+                box-shadow .38s ease;
+    will-change: transform;
+  }
+  .rounded-\[2\.5rem\]:hover {
+    transform: perspective(900px) rotateY(-1.5deg) rotateX(.8deg) scale(1.012) translateY(-5px);
+    box-shadow: 0 22px 48px rgba(51,69,13,.16);
+  }
+
+  /* Image zoom on hover */
+  .rounded-\[2\.5rem\] { overflow: hidden; }
+  .rounded-\[2\.5rem\] img {
+    transition: transform .6s cubic-bezier(.25,.46,.45,.94);
+    will-change: transform;
+  }
+  .rounded-\[2\.5rem\]:hover img { transform: scale(1.06); }
+
+  /* Pricing cards */
+  .rounded-\[2rem\] {
+    transition: transform .32s cubic-bezier(.34,1.56,.64,1),
+                box-shadow .32s ease;
+  }
+  .rounded-\[2rem\]:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 44px rgba(51,69,13,.14);
+  }
+
+  /* Testimonial / stat cards */
+  .rounded-3xl, .rounded-xl {
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1),
+                box-shadow .3s ease;
+  }
+  .rounded-3xl:hover {
+    transform: translateY(-6px) scale(1.008);
+    box-shadow: 0 14px 36px rgba(51,69,13,.1);
+  }
+  .rounded-xl:hover {
+    transform: translateY(-4px) scale(1.012);
+    box-shadow: 0 10px 28px rgba(51,69,13,.1);
+  }
+
+  /* Team portrait wrappers */
+  .group {
+    transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  .group:hover { transform: translateY(-8px) scale(1.02); }
+  .group:hover .rotate-6 { transform: rotate(0deg) !important; }
+  .group:hover .-rotate-6 { transform: rotate(0deg) !important; }
+
+  /* Step number circles */
+  .w-24.h-24.rounded-full {
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1),
+                box-shadow .3s ease;
+  }
+  .w-24.h-24.rounded-full:hover {
+    transform: scale(1.12);
+    box-shadow: 0 8px 24px rgba(51,69,13,.2);
+  }
+
+  /* ── 8. Hero parallax bg ── */
+  section:first-of-type img.object-cover {
+    will-change: transform;
+    transition: transform .08s linear;
+  }
+
+  /* ── 9. Floating vitals badge ── */
+  .backdrop-blur-xl.rounded-2xl {
+    animation: wsFloat 4.5s ease-in-out infinite;
+  }
+  @keyframes wsFloat {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+
+  /* ── 10. Progress bar fills ── */
+  .ws-progress-bar {
+    width: 0 !important;
+    transition: width 1.5s cubic-bezier(.25,.46,.45,.94) !important;
+  }
+  .ws-progress-bar.ws-filled { width: var(--ws-w) !important; }
+
+  /* ── 11. Animated scroll cue ── */
+  @keyframes wsBounce {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(8px); }
+  }
+
+  /* ── 12. Ambient background shimmer on dark section ── */
+  .bg-stone-900.rounded-t-\[4rem\] {
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(51,69,13,.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 80%, rgba(133,82,54,.08) 0%, transparent 55%) !important;
+  }
+
+  /* ── 13. List item stagger on reveal ── */
+  .ws-list-stagger li {
+    opacity: 0;
+    transform: translateX(-16px);
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  .ws-list-stagger.ws-visible li { opacity: 1; transform: none; }
+  .ws-list-stagger.ws-visible li:nth-child(1) { transition-delay: .05s; }
+  .ws-list-stagger.ws-visible li:nth-child(2) { transition-delay: .15s; }
+  .ws-list-stagger.ws-visible li:nth-child(3) { transition-delay: .25s; }
+
+  /* ── 14. Cursor glow (desktop only) ── */
+  #ws-cursor {
+    position: fixed; pointer-events: none; z-index: 9990;
+    width: 380px; height: 380px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(51,69,13,.045) 0%, transparent 70%);
+    transform: translate(-50%,-50%);
+    display: none;
+  }
+  @media (hover: hover) { #ws-cursor { display: block; } }
+
+  /* ── 15. Mobile: disable heavy transforms ── */
+  @media (max-width: 767px) {
+    .rounded-\[2\.5rem\]:hover { transform: none; }
+    .rounded-\[2\.5rem\]:hover img { transform: none; }
+    .rounded-\[2rem\]:hover { transform: translateY(-4px); }
+  }
+
+  /* ── 16. Section entrance fade (adds to existing sections) ── */
+  section { position: relative; }
+
+  /* ── 17. Badge label pop ── */
+  .inline-block.rounded-full {
+    transition: transform .25s cubic-bezier(.34,1.56,.64,1),
+                box-shadow .25s ease;
+  }
+  .inline-block.rounded-full:hover {
+    transform: scale(1.05) translateY(-1px);
+    box-shadow: 0 4px 14px rgba(133,82,54,.2);
+  }
+</style>
+
+</head>
+<body class="bg-surface text-on-surface">
+
+<!-- Scroll progress bar (injected, invisible to layout) -->
+<div id="ws-progress" aria-hidden="true"></div>
+<!-- Cursor glow (desktop only) -->
+<div id="ws-cursor" aria-hidden="true"></div>
+
+<!-- TopNavBar — ORIGINAL UNCHANGED -->
+<nav class="fixed top-0 w-full z-50 bg-white/70 dark:bg-stone-900/70 backdrop-blur-md shadow-sm" id="ws-nav">
+  <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+     <div class="flex items-center">
+      <img src="wellsense-logo.png" alt="WellSense Logo" class="h-14 w-auto object-contain"/>
+    </div>
+    <div class="hidden md:flex items-center gap-8 font-['Manrope'] tracking-tight">
+      <a class="text-green-900 dark:text-green-400 font-semibold border-b-2 border-green-800 transition-all duration-300" href="#">Home</a>
+      <a class="text-stone-600 dark:text-stone-400 hover:text-green-800 transition-all duration-300" href="#">About</a>
+      <a class="text-stone-600 dark:text-stone-400 hover:text-green-800 transition-all duration-300" href="#">Programs</a>
+      <a class="text-stone-600 dark:text-stone-400 hover:text-green-800 transition-all duration-300" href="#">Events</a>
+      <a class="text-stone-600 dark:text-stone-400 hover:text-green-800 transition-all duration-300" href="#">Team</a>
+<div class="relative group">
+  
+  <!-- Services Button -->
+  <a class="text-green-900 dark:text-green-400 font-semibold border-b-2 border-green-800 transition-all duration-300 cursor-pointer flex items-center gap-1">
+    Services
+    <span class="text-sm"></span>
+  </a>
+
+  <!-- Dropdown -->
+  <div class="absolute left-0 mt-3 w-64 bg-gray-100 dark:bg-stone-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+    
+    <ul class="flex flex-col py-4">
+      <li class="px-6 py-3 hover:bg-gray-200 dark:hover:bg-stone-700 cursor-pointer font-medium text-green-900">Diagnostics</li>
+      <li class="px-6 py-3 hover:bg-gray-200 dark:hover:bg-stone-700 cursor-pointer font-medium text-green-900">E-Commerce</li>
+      <li class="px-6 py-3 hover:bg-gray-200 dark:hover:bg-stone-700 cursor-pointer font-medium text-green-900">Cloud Kitchen</li>
+      <li class="px-6 py-3 hover:bg-gray-200 dark:hover:bg-stone-700 cursor-pointer font-medium text-green-900">LMS</li>
+      <li class="px-6 py-3 hover:bg-gray-200 dark:hover:bg-stone-700 cursor-pointer font-medium text-green-900">FitSense</li>
+    </ul>
+
+  </div>
+</div>    </div>
+    <button class="bg-primary text-on-primary px-6 py-2.5 rounded-xl font-semibold scale-95 active:scale-100 transition-transform hover:opacity-80">Join Now</button>
+  </div>
+</nav>
+
+<!-- Hero Section — ORIGINAL UNCHANGED -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <img id="ws-hero-img" class="w-full h-full object-cover" data-alt="health and nutrition background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApKM5Q36qk_F2cfz6sZz_OynXmjvgsfsOXe5tpuBB7e9i8fB24Be4E3sgTi9XxtDyzejeu7vnEuhJ-zeFGkpslLJurTJl0q5JsC6iOZPID2qmbAiCZwllTad_L2nCw1v3QqqQq1-pw5E-42-renN24y0Aney_rGjhvnohByfl_YlGHARjiGFUjQjZDU4YkKx8hvvEOqTRPFqNu0CMoksNQ1Kef1oDkBaQ5QRPiyHto5KbO8WpkKDQyh4B1qbHTXkle2tzyvjlPp4s"/>
+    <div class="absolute inset-0 bg-black/50"></div>
+  </div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6 text-center ws-reveal ws-scale">
+    <h1 class="font-headline text-6xl md:text-8xl font-extrabold text-white leading-[1.1] tracking-tighter mb-6">
+      Your Health, <br/><span class="text-primary-fixed">Cultivated.</span>
+    </h1>
+    <p class="ws-reveal text-xl md:text-2xl text-white/90 max-w-2xl mx-auto mb-10 leading-relaxed ws-d1">
+      Welcome to the Digital Sanctuary. A data-driven wellness ecosystem designed to restore balance, vitality, and longevity through expert-led protocols.
+    </p>
+    <div class="flex flex-wrap gap-6 justify-center ws-reveal ws-d2">
+      <button class="bg-primary text-on-primary px-10 py-5 rounded-xl text-lg font-bold shadow-2xl hover:bg-primary-container transition-all">Begin Journey</button>
+      <button class="bg-white/10 backdrop-blur-md border border-white/20 text-white px-10 py-5 rounded-xl text-lg font-bold hover:bg-white/20 transition-all">View Programs</button>
+    </div>
+  </div>
+  <div class="absolute bottom-12 right-12 bg-white/10 backdrop-blur-xl p-6 rounded-2xl border border-white/20 shadow-2xl max-w-[240px] hidden md:block">
+    <div class="flex items-center gap-3 mb-2">
+      <span class="material-symbols-outlined text-secondary-fixed" style="font-variation-settings: 'FILL' 1;">favorite</span>
+      <span class="font-bold text-white">Vitals Monitor</span>
+    </div>
+    <p class="text-sm text-white/80 leading-snug">Real-time health optimization across 14 biological markers.</p>
+  </div>
+</section>
+
+<!-- Trust Stats — ORIGINAL UNCHANGED -->
+<section class="py-12 bg-surface-container-low">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div class="text-center p-8 rounded-xl bg-surface-container-lowest shadow-sm ws-reveal ws-d1">
+        <div class="text-4xl font-headline font-extrabold text-primary mb-1"><span class="ws-counter" data-target="500" data-suffix="k+">0k+</span></div>
+        <div class="text-label text-on-surface-variant uppercase tracking-widest text-xs font-semibold">Global Clients</div>
+      </div>
+      <div class="text-center p-8 rounded-xl bg-surface-container-lowest shadow-sm ws-reveal ws-d2">
+        <div class="text-4xl font-headline font-extrabold text-primary mb-1"><span class="ws-counter" data-target="369" data-suffix="">0</span></div>
+        <div class="text-label text-on-surface-variant uppercase tracking-widest text-xs font-semibold">Expert Coaches</div>
+      </div>
+      <div class="text-center p-8 rounded-xl bg-surface-container-lowest shadow-sm ws-reveal ws-d3">
+        <div class="text-4xl font-headline font-extrabold text-primary mb-1"><span class="ws-counter" data-target="98" data-suffix="%">0%</span></div>
+        <div class="text-label text-on-surface-variant uppercase tracking-widest text-xs font-semibold">Success Rate</div>
+      </div>
+      <div class="text-center p-8 rounded-xl bg-surface-container-lowest shadow-sm ws-reveal ws-d4">
+        <div class="text-4xl font-headline font-extrabold text-primary mb-1"><span class="ws-counter" data-target="12" data-suffix="+">0+</span></div>
+        <div class="text-label text-on-surface-variant uppercase tracking-widest text-xs font-semibold">Years Experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Precision Programs Section — ORIGINAL UNCHANGED -->
+<section class="py-24 px-6 overflow-hidden bg-surface">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-20 text-center ws-reveal">
+      <h2 class="text-4xl md:text-5xl font-headline font-extrabold text-primary mb-4">Precision Programs</h2>
+      <p class="text-on-surface-variant max-w-2xl mx-auto">Scientifically-backed transformation paths tailored to your unique biological blueprint.</p>
+    </div>
+
+    <!-- Program 1: Fat Loss -->
+    <div class="grid md:grid-cols-2 gap-16 items-center mb-32">
+      <div class="order-2 md:order-1 ws-reveal ws-from-left">
+        <div class="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold mb-4 uppercase tracking-wider font-label">Metabolic Excellence</div>
+        <h3 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-6">Sustainable Fat Loss</h3>
+        <p class="text-on-surface-variant mb-8 leading-relaxed">Move beyond calorie counting. Our protocol focuses on hormonal optimization and lean mass preservation for permanent results.</p>
+        <ul class="space-y-4 mb-10 ws-list-stagger">
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Insulin Sensitivity Training</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Customized Macronutrient Phasing</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Weekly Metabolic Adjustments</span></li>
+        </ul>
+        <div class="flex items-center gap-6">
+          <button class="bg-primary text-on-primary px-8 py-3.5 rounded-xl font-bold hover:bg-primary-container transition-all">Get Started</button>
+          <p class="text-xs text-on-surface-variant font-medium">Includes 15% discount on <br/>first coaching session.</p>
+        </div>
+      </div>
+      <div class="order-1 md:order-2 rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3] ws-reveal ws-from-right">
+        <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8Y7aLCrWnNqZhH4j7Ib4UEie8Q0eErbXI7W97jV4OSy6WM5jhsn2u-kz0elkEh1A_KNGlAN9MDxXOjY_qYjqh1N1JDdFrrbKiyH7mHIGziAHVvm4wFhbAbRE5kzZRD7It-CUt4178rYNTVoXX5RxZjkdcAdy2lvlsaU2CKSPh5pU0tAE44AIcga6GuMtDodSMrRPZKG1hGMskWhaTLw8tCJYNLMEeZ7rAhdp7zy-dERRxEqkaAT6S-YVu_Hv7vm34yjiIbW7IjTU"/>
+      </div>
+    </div>
+
+    <!-- Program 2: Diabetes -->
+    <div class="grid md:grid-cols-2 gap-16 items-center mb-32">
+      <div class="rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3] ws-reveal ws-from-left">
+        <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFR5DUwbIls1TNbpiNh0kPUJauTHpKppYBFmnLUD89uQMiNr3KbF60zugMw3T64xlEeSOZqa8EfmeznVR0-q7Pj7NyYg_0Plqi3VOVi3lH-u5aWRmg_kPaXimebq20I9V2ZdjS8mrSTVnr5DZU3j3dF7ddR63nivjnuM1-WIWP0afTV2TdksMdGSTrQOESaJTGlbYIliVkeg_WMh1ysabSiJfMlCD2oVjisGamQnFaKh39pceLbJx4hkBlJbdtEt1FMcvh06wl5sc"/>
+      </div>
+      <div class="ws-reveal ws-from-right">
+        <div class="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold mb-4 uppercase tracking-wider font-label">Reversal Science</div>
+        <h3 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-6">Type 2 Diabetes Control</h3>
+        <p class="text-on-surface-variant mb-8 leading-relaxed">Integrated glucose management through low-glycemic load protocols and expert medical oversight to reduce medication dependency.</p>
+        <ul class="space-y-4 mb-10 ws-list-stagger">
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">HbA1c Reduction Monitoring</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">CGM Data Interpretation</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Anti-Inflammatory Nutrition Plan</span></li>
+        </ul>
+        <div class="flex items-center gap-6">
+          <button class="bg-primary text-on-primary px-8 py-3.5 rounded-xl font-bold hover:bg-primary-container transition-all">Get Started</button>
+          <p class="text-xs text-on-surface-variant font-medium">Includes 15% discount on <br/>first coaching session.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Program 3: PCOD/PCOS -->
+    <div class="grid md:grid-cols-2 gap-16 items-center mb-32">
+      <div class="order-2 md:order-1 ws-reveal ws-from-left">
+        <div class="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold mb-4 uppercase tracking-wider font-label">Hormonal Balance</div>
+        <h3 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-6">PCOD/PCOS Protocol</h3>
+        <p class="text-on-surface-variant mb-8 leading-relaxed">Restore your natural rhythm. Our program addresses the root causes of hormonal imbalance through cycle-synced nutrition and metabolic training.</p>
+        <ul class="space-y-4 mb-10 ws-list-stagger">
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Androgen Sensitivity Management</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Fertility-Focused Nutrition</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Stress &amp; Cortisol Regulation</span></li>
+        </ul>
+        <div class="flex items-center gap-6">
+          <button class="bg-primary text-on-primary px-8 py-3.5 rounded-xl font-bold hover:bg-primary-container transition-all">Get Started</button>
+          <p class="text-xs text-on-surface-variant font-medium">Includes 15% discount on <br/>first coaching session.</p>
+        </div>
+      </div>
+      <div class="order-1 md:order-2 rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3] ws-reveal ws-from-right">
+        <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmgXdX_MeksmsLEHpr5HuErlboeRHa-vyjcgMXo0M3x6cqW6HQmgqw7Qu1tTKWw-D4Vbxdj-qSk-P7BgIpGunmffAboJuOYss1_xN9PHXMOuYFusIxuGu_QmBxbY0KKm1xVMsehMaI04-GefY80dYVZZxXealpNvvlVQwFvKuMM5Al9qm7jYwyw3pP8CFaHNsYzT3t4wJmJImACVApzPiGjPMxnoc1a4PtIJDyfKQKl9akPgIY1yPuVV-0qkSv_HfqIBC7-t2zWgc"/>
+      </div>
+    </div>
+
+    <!-- Program 4: Fertility -->
+    <div class="grid md:grid-cols-2 gap-16 items-center mb-32">
+      <div class="rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3] ws-reveal ws-from-left">
+        <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxoHmDmC3AlQbBYYIz41VmGQWvHrCpIwQPMYI4sohrVF-YAuyU1icjHmGkXJCttq9sbsoZAnhCPsuCf0XO5a2DQjw5UypjgeSUW4kt5t4onyM3HXPkxUnSGvDudXgLxJAQcdxd41wIL3O3jnpTZeHPx3C6cbbHRkIZmDW2PQJ6QYOS9yEYlozE-3sgwsyHWy0pLk0Rky3qQvmlht8syvyWnXFWDwulE3Rz36tRyzdOC1aOLH200hjmU67sFg2cUAKMjJ98O0179BI"/>
+      </div>
+      <div class="ws-reveal ws-from-right">
+        <div class="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold mb-4 uppercase tracking-wider font-label">Pre-Conception Excellence</div>
+        <h3 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-6">Fertility Support</h3>
+        <p class="text-on-surface-variant mb-8 leading-relaxed">Optimize your biological markers for the healthiest start. We provide science-based protocols for both maternal and paternal vitality.</p>
+        <ul class="space-y-4 mb-10 ws-list-stagger">
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Egg &amp; Sperm Quality Optimization</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Endometrial Environment Prep</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Post-Natal Recovery Roadmap</span></li>
+        </ul>
+        <div class="flex items-center gap-6">
+          <button class="bg-primary text-on-primary px-8 py-3.5 rounded-xl font-bold hover:bg-primary-container transition-all">Get Started</button>
+          <p class="text-xs text-on-surface-variant font-medium">Includes 15% discount on <br/>first coaching session.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Program 5: Bone & Joint -->
+    <div class="grid md:grid-cols-2 gap-16 items-center mb-32">
+      <div class="order-2 md:order-1 ws-reveal ws-from-left">
+        <div class="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold mb-4 uppercase tracking-wider font-label">Structural Longevity</div>
+        <h3 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-6">Bone &amp; Joint Health</h3>
+        <p class="text-on-surface-variant mb-8 leading-relaxed">Strengthen your foundation. Our program focuses on increasing bone density and cartilage resilience through collagen-rich nutrition and impact-based training.</p>
+        <ul class="space-y-4 mb-10 ws-list-stagger">
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Osteoporosis Prevention Protocol</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Joint Lubrication &amp; Recovery</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Functional Mobility Coaching</span></li>
+        </ul>
+        <div class="flex items-center gap-6">
+          <button class="bg-primary text-on-primary px-8 py-3.5 rounded-xl font-bold hover:bg-primary-container transition-all">Get Started</button>
+          <p class="text-xs text-on-surface-variant font-medium">Includes 15% discount on <br/>first coaching session.</p>
+        </div>
+      </div>
+      <div class="order-1 md:order-2 rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3] ws-reveal ws-from-right">
+        <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQHtl8cvA_O6mf5L657UYXdBud7YR21Fp-Wa8Zvs1mY8jFbNy2awWZOOigO0tEeYy_UaxPNwM2fa66B3VgPwCtregLOPTv50SkZR_3Nb9rmwAoQZ_zrh9A_tcKxbTICQdcklb9McuT1vpC718bhf28IgUWmwS4NWLujoUyitcAVrtN-pXv7_mc-U2J4iu9D85aZra3hf1UL3UsG0R5RS-8AFQulSz9dKRfXXjWQB4MbZVXWt-LiFXYaW-TS7DWrxA0HNAsENm-SXA"/>
+      </div>
+    </div>
+
+    <!-- Program 6: Hair & Skin -->
+    <div class="grid md:grid-cols-2 gap-16 items-center mb-32">
+      <div class="rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3] ws-reveal ws-from-left">
+        <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0apEwArDPNvH8GLqL1-VBZIe10skVUhUCMLMIhoUnhM8vsBlPUQuE-XdEhEWMMm_S5Vc722XLqX-K4C68s9k6C0oToCpPQo9XSOmv7oy8N50mtA1-uJjMpmIZ8trsZF5BN3qeRkbrJL4DlPxoXdfTv8eZ9TghIgR3FRk_lI8iw8hfzvKmdQOtYzRNFiroARBJj6svEQYh2XMB5PcXpsQy3Ji3mkVnixDTSX393WigKym3PkXOeReK06L_8yAUdr2PCrQlxJYtY9Y"/>
+      </div>
+      <div class="ws-reveal ws-from-right">
+        <div class="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold mb-4 uppercase tracking-wider font-label">Aesthetic Rejuvenation</div>
+        <h3 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-6">Hair &amp; Skin Glow</h3>
+        <p class="text-on-surface-variant mb-8 leading-relaxed">Beauty begins from within. We target cellular repair and hydration to restore the natural radiance of your skin and the vitality of your hair follicles.</p>
+        <ul class="space-y-4 mb-10 ws-list-stagger">
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Internal Hydration Strategies</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Anti-Oxidant Load Management</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Sebum &amp; Scalp Health Protocol</span></li>
+        </ul>
+        <div class="flex items-center gap-6">
+          <button class="bg-primary text-on-primary px-8 py-3.5 rounded-xl font-bold hover:bg-primary-container transition-all">Get Started</button>
+          <p class="text-xs text-on-surface-variant font-medium">Includes 15% discount on <br/>first coaching session.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Program 7: Autoimmune -->
+    <div class="grid md:grid-cols-2 gap-16 items-center mb-32">
+      <div class="order-2 md:order-1 ws-reveal ws-from-left">
+        <div class="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold mb-4 uppercase tracking-wider font-label">Inflammation Control</div>
+        <h3 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-6">Auto-Immune Support</h3>
+        <p class="text-on-surface-variant mb-8 leading-relaxed">Manage flares and restore gut integrity. Our protocol uses elimination strategies and microbiome restoration to calm systemic inflammation.</p>
+        <ul class="space-y-4 mb-10 ws-list-stagger">
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Leaky Gut Repair Protocol</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Bio-Individual Trigger ID</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Vagus Nerve Stimulation Tips</span></li>
+        </ul>
+        <div class="flex items-center gap-6">
+          <button class="bg-primary text-on-primary px-8 py-3.5 rounded-xl font-bold hover:bg-primary-container transition-all">Get Started</button>
+          <p class="text-xs text-on-surface-variant font-medium">Includes 15% discount on <br/>first coaching session.</p>
+        </div>
+      </div>
+      <div class="order-1 md:order-2 rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3] ws-reveal ws-from-right">
+        <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhZyM7Z5o33sKR5Jknz4V1aM44MH30r4Ftawom4vUO10Ly93nfXPu4MlIkaSb05PXElfy5lFmwOLnSC_LMc_HkH2yNkhcFCqd-oCJ8ss5Xft-qzXuFK9zJ1dLae0xzp4eOfCDPuj0z9ah_dnbge811U2xImhfNRXMrqvVFDj51SLZsN4-glij13UFvJga9K4TorsdSwPNJijXv34w3LyAk_SP3cMJTim0qNWd3cpDZOlY_F4QfME8JaGC6mYyZOrLhEP9ihlfX3ow"/>
+      </div>
+    </div>
+
+    <!-- Program 8: Kids -->
+    <div class="grid md:grid-cols-2 gap-16 items-center mb-32">
+      <div class="rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3]">
+<img class="w-full h-full object-cover" data-alt="bright and happy child enjoying a colorful bowl of fresh berries and yogurt, capturing the joy of healthy eating" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAM5kVryFQ4r5PMXnFIUiaGCLLXTQpiWkrAa5JGcUmenNlGp2tbPxnjhT-3ez7fXdIhD7QMi-qwG1DgqAmYzt-FbpwY4hvQMUco2Bo4SN1z1CIy2-JQefSCwFFSo07HU7EepT2TH9KILv6wOjv9t2tW-CFlyczjd5Kxj1ppdFZcnMUaW8TH_BHFuH_EynCdssESENHM2YKY53IqjJRzHCPT1zpb6W285UdUsg7vki9tvE7lAusDNFNNeY3z7DAfpXVQqKr-m3byDLY"/>
+</div>
+      <div class="ws-reveal ws-from-right">
+        <div class="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold mb-4 uppercase tracking-wider font-label">Lifelong Foundation</div>
+        <h3 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-6">Kids Health &amp; Nutrition</h3>
+        <p class="text-on-surface-variant mb-8 leading-relaxed">Foster a healthy relationship with food from the start. We provide parents with practical, science-based tools for growth and cognitive development.</p>
+        <ul class="space-y-4 mb-10 ws-list-stagger">
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Neuro-Developmental Nutrition</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Picky Eater Transition Method</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Sugar-Free Energy Protocols</span></li>
+        </ul>
+        <div class="flex items-center gap-6">
+          <button class="bg-primary text-on-primary px-8 py-3.5 rounded-xl font-bold hover:bg-primary-container transition-all">Get Started</button>
+          <p class="text-xs text-on-surface-variant font-medium">Includes 15% discount on <br/>first coaching session.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Program 9: Immunity -->
+    <div class="grid md:grid-cols-2 gap-16 items-center mb-32">
+      <div class="order-2 md:order-1 ws-reveal ws-from-left">
+        <div class="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold mb-4 uppercase tracking-wider font-label">Pathogen Defense</div>
+        <h3 class="text-3xl md:text-4xl font-headline font-bold text-primary mb-6">Immunity Booster</h3>
+        <p class="text-on-surface-variant mb-8 leading-relaxed">Build an unbreakable defense system. This protocol optimizes your white blood cell response and metabolic resilience against seasonal challenges.</p>
+        <ul class="space-y-4 mb-10 ws-list-stagger">
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Micronutrient Loading (Vit C, D, Zinc)</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Lymphatic Drainage Education</span></li>
+          <li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary bg-primary-fixed p-1 rounded-full text-sm">check</span><span class="text-on-surface font-medium">Seasonal Bio-Hack Protocol</span></li>
+        </ul>
+        <div class="flex items-center gap-6">
+          <button class="bg-primary text-on-primary px-8 py-3.5 rounded-xl font-bold hover:bg-primary-container transition-all">Get Started</button>
+          <p class="text-xs text-on-surface-variant font-medium">Includes 15% discount on <br/>first coaching session.</p>
+        </div>
+      </div>
+      <div class="order-1 md:order-2 rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3] ws-reveal ws-from-right">
+        <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDirKybwoPZKlniYB_RXuEo574T_Wrvd8v9bTfrgE6Fw6-iRIaqUqj8apGDJIdqwmqfo3sBq1pBVOBVX5jcY_JoNtfmdylRBppNy_zdStBmF4ay-xgfMnYyrPpjnNyi-B950b--n6rOgKoaE4FtVGQDHZR0NnvsgayrkrIGbEaGaM_PKZOHaB2FZlHMTaA5Ucg--dQiB68oX8ZOMx3OQZUPJbkLtqyrk3xQKdp6QrbTckxLQyGhzoSH_xgFVRrikj7UXCWHurJYABI"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Transformation Section — ORIGINAL UNCHANGED -->
+<section class="py-24 bg-primary text-on-primary">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-2 gap-20 items-center">
+      <div class="ws-reveal ws-from-left">
+        <h2 class="text-4xl md:text-5xl font-headline font-extrabold mb-8">Measured Results, Real Lives.</h2>
+        <p class="text-on-primary-container text-lg mb-12">We don't just track weight; we track vitality. See the biometric shifts of our community members over 90 days.</p>
+        <div class="space-y-8">
+          <div class="bg-primary-container p-6 rounded-2xl">
+            <div class="flex justify-between items-end mb-4">
+              <span class="font-bold">Average HbA1c Drop</span>
+              <span class="text-2xl font-extrabold">-2.4%</span>
+            </div>
+            <div class="w-full bg-primary h-2 rounded-full overflow-hidden">
+              <div class="bg-secondary-container h-full ws-progress-bar" style="--ws-w:75%;"></div>
+            </div>
+          </div>
+          <div class="bg-primary-container p-6 rounded-2xl">
+            <div class="flex justify-between items-end mb-4">
+              <span class="font-bold">Visceral Fat Reduction</span>
+              <span class="text-2xl font-extrabold">-18%</span>
+            </div>
+            <div class="w-full bg-primary h-2 rounded-full overflow-hidden">
+              <div class="bg-secondary-container h-full ws-progress-bar" style="--ws-w:85%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4 ws-reveal ws-from-right">
+        <div class="space-y-4">
+          <div class="rounded-2xl overflow-hidden shadow-xl aspect-square">
+            <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu8kaSQm_cbMG-htJibpu6pO2Pe6tYlsX_qBCJT_jzE1qcsstBE_cLl2w1YsIEH5buSpfMQpOL-Umpjugcl-8Y_rEliN3ApAjDGZ2_h5neszNLe-rnCyl3-6xajM3_dAl_9ntYsO5fAGQYXXDpa8zuDxm-CovvnGVRQR9lZEqFnJXGPHlDKABK2aqaHfkIjwNdFgv1MQ4jKjZlSi7eoZgF9Q4xVGX46RSgmrLrRwGq_2dp7-kBCA5fH-Pwnb1Wdk1MAAHIgS_Eijs"/>
+          </div>
+          <div class="bg-primary-fixed p-4 rounded-2xl text-primary font-bold text-center italic">"I reclaimed my energy."</div>
+        </div>
+        <div class="space-y-4 pt-12">
+          <div class="rounded-2xl overflow-hidden shadow-xl aspect-square">
+            <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSF276QTlh9eTV-V9Mm9WzG2VzZbi2o5mz0HxXm7qnqZ-c4avcXFxmTjYaULF5580cs3WR6s_YXun7c0V2wtNslOOS5FW7gNrF29VX4uRHawnpaqSOpMSAUwrsWsJzO4_vuwT42AsbSBPyxfSkn5lKVJR_qmON47UxVhIZk_G6YoHNRzFZi4H9FWIOrHQRuwf3ZH01xLlEn-uVH-sIQWykSAOUK_yb7V_uLlxO4tf4YbfrqGxFKSfiFEAXnExZWCvsaXtC1aDKX7g"/>
+          </div>
+          <div class="bg-secondary-container p-4 rounded-2xl text-on-secondary-container font-bold text-center">Reversed Prediabetes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works: Sanctuary Method — ORIGINAL UNCHANGED -->
+<section class="py-24 px-6 bg-surface">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-4xl font-headline font-extrabold text-primary text-center mb-16 ws-reveal">The Sanctuary Method</h2>
+    <div class="grid md:grid-cols-4 gap-12 relative">
+      <div class="hidden md:block absolute top-12 left-0 w-full h-px bg-outline-variant opacity-30 -z-10"></div>
+      <div class="text-center ws-reveal ws-d1">
+        <div class="w-24 h-24 rounded-full bg-surface-container-lowest flex items-center justify-center mx-auto mb-6 shadow-md border-4 border-surface">
+          <span class="text-2xl font-bold text-secondary">01</span>
+        </div>
+        <h4 class="font-bold text-primary mb-2">Discovery</h4>
+        <p class="text-sm text-on-surface-variant">Deep-dive assessment of your genetics, bloodwork, and lifestyle.</p>
+      </div>
+      <div class="text-center ws-reveal ws-d2">
+        <div class="w-24 h-24 rounded-full bg-surface-container-lowest flex items-center justify-center mx-auto mb-6 shadow-md border-4 border-surface">
+          <span class="text-2xl font-bold text-secondary">02</span>
+        </div>
+        <h4 class="font-bold text-primary mb-2">Protocol</h4>
+        <p class="text-sm text-on-surface-variant">Creation of your bespoke bio-mechanical and nutritional roadmap.</p>
+      </div>
+      <div class="text-center ws-reveal ws-d3">
+        <div class="w-24 h-24 rounded-full bg-surface-container-lowest flex items-center justify-center mx-auto mb-6 shadow-md border-4 border-surface">
+          <span class="text-2xl font-bold text-secondary">03</span>
+        </div>
+        <h4 class="font-bold text-primary mb-2">Action</h4>
+        <p class="text-sm text-on-surface-variant">Daily coaching and real-time tracking via our proprietary app.</p>
+      </div>
+      <div class="text-center ws-reveal ws-d4">
+        <div class="w-24 h-24 rounded-full bg-surface-container-lowest flex items-center justify-center mx-auto mb-6 shadow-md border-4 border-surface">
+          <span class="text-2xl font-bold text-secondary">04</span>
+        </div>
+        <h4 class="font-bold text-primary mb-2">Sustenance</h4>
+        <p class="text-sm text-on-surface-variant">Systemic habits to maintain your new baseline for life.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- App Dashboard Preview — ORIGINAL UNCHANGED -->
+<section class="py-24 px-6 bg-stone-900 text-white rounded-t-[4rem]">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-20 items-center">
+      <div class="relative ws-reveal ws-from-left">
+        <div class="bg-stone-800 p-8 rounded-[2rem] border border-stone-700 shadow-2xl">
+          <div class="flex items-center justify-between mb-8">
+            <div>
+              <p class="text-stone-400 text-sm">Welcome back,</p>
+              <h5 class="text-xl font-bold">Alexander</h5>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-primary"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mb-8">
+            <div class="bg-stone-700/50 p-6 rounded-2xl">
+              <span class="material-symbols-outlined text-primary mb-2">directions_walk</span>
+              <div class="text-2xl font-bold">12,482</div>
+              <div class="text-xs text-stone-400">Daily Steps</div>
+            </div>
+            <div class="bg-stone-700/50 p-6 rounded-2xl">
+              <span class="material-symbols-outlined text-secondary mb-2" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+              <div class="text-2xl font-bold">2.4L</div>
+              <div class="text-xs text-stone-400">Hydration</div>
+            </div>
+          </div>
+          <div class="bg-stone-700/50 p-6 rounded-2xl">
+            <div class="flex justify-between items-center mb-4">
+              <span class="font-bold">Sleep Quality</span>
+              <span class="text-green-400 text-sm">Excellent</span>
+            </div>
+            <div class="flex gap-2 items-end h-24">
+              <div class="w-full bg-stone-600 rounded-t-lg h-[40%]"></div>
+              <div class="w-full bg-stone-600 rounded-t-lg h-[60%]"></div>
+              <div class="w-full bg-primary rounded-t-lg h-[90%]"></div>
+              <div class="w-full bg-stone-600 rounded-t-lg h-[50%]"></div>
+              <div class="w-full bg-stone-600 rounded-t-lg h-[75%]"></div>
+            </div>
+          </div>
+        </div>
+        <div class="absolute -top-10 -right-10 opacity-20 hidden lg:block">
+          <span class="material-symbols-outlined text-[200px] text-primary">eco</span>
+        </div>
+      </div>
+      <div class="ws-reveal ws-from-right">
+        <h2 class="text-4xl md:text-5xl font-headline font-extrabold mb-8 leading-tight">Your Health, <br/>Encoded in Data.</h2>
+        <p class="text-stone-400 text-lg mb-10">Our intelligent interface simplifies complex biometrics into actionable daily tasks. Stay connected to your coach and your progress 24/7.</p>
+        <div class="flex gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center">
+              <span class="material-symbols-outlined text-primary">bolt</span>
+            </div>
+            <div>
+              <div class="font-bold">Instant Feedback</div>
+              <div class="text-xs text-stone-400">Real-time coaching alerts</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+              <span class="material-symbols-outlined">group</span>
+            </div>
+            <div>
+              <div class="font-bold">Peer Support</div>
+              <div class="text-xs text-stone-400">Global community access</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Expert Profiles — ORIGINAL UNCHANGED -->
+<section class="py-24 px-6 bg-surface">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-4xl font-headline font-extrabold text-primary text-center mb-16 ws-reveal">The WellSense Council</h2>
+    <div class="grid md:grid-cols-3 gap-12">
+      <div class="text-center group ws-reveal ws-d1">
+        <div class="relative w-48 h-48 mx-auto mb-6">
+          <div class="absolute inset-0 bg-primary rotate-6 rounded-3xl group-hover:rotate-0 transition-transform duration-300"></div>
+          <img class="relative w-full h-full object-cover rounded-3xl border-4 border-surface shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkjFlEscYlL5w_P--ezEH7yYn_EQkjevwawKw2UDKfw5kKN-mggZ0aPW7Ach6Ar6uCl0zhKal2CZJMqDA_Twvb-x3vabhtAZA73EeL1vZG_vB0_a0UwOM0d-IrK5a3FfcaJ9Xuor47VuqeWqgxDbUimp7P03eEfP_Pju41owsOnIDg84wPeRrgOdaBPM9W5pTZ4Etl5NbfaAakMhLtOXZvscXX_QOzLfGdKJ8SeEthDUmt1n-shBfUEI2oOqZTbv2elAUExB6jQIg"/>
+        </div>
+        <h4 class="text-xl font-bold text-primary">Dr. Elena Rossi</h4>
+        <p class="text-sm text-secondary font-semibold mb-2">Chief Medical Officer</p>
+        <p class="text-sm text-on-surface-variant max-w-xs mx-auto">Double-board certified in Integrative Medicine and Endocrinology.</p>
+      </div>
+      <div class="text-center group ws-reveal ws-d2">
+        <div class="relative w-48 h-48 mx-auto mb-6">
+          <div class="absolute inset-0 bg-secondary -rotate-6 rounded-3xl group-hover:rotate-0 transition-transform duration-300"></div>
+          <img class="relative w-full h-full object-cover rounded-3xl border-4 border-surface shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5oxmdwEVd7PTihl1QBxTu4NzJ3UWuUa5FkAVD0g4RdIv4Z6TQy6SLBY0hI4GI6pMXjNkgKxjKEOMBRPyHiwksX72ZsdRKE_ia3r7FajnqijhwFwABbOednO9wHaVsNUQPiN9fRiaudqP4sNeUv-c3DKYy7cNpgqcpOSe8Io-RPVK-2zqNSYhvgO8kbprhcCg_CA5yFnmGPL25db0i2sulDWOIbptQd4qbCAtp9oxRmq0woT1lWaoxcCTpJZhkjex1Fm_0XPa3-_E"/>
+        </div>
+        <h4 class="text-xl font-bold text-primary">Marcus Chen</h4>
+        <p class="text-sm text-secondary font-semibold mb-2">Human Performance Lead</p>
+        <p class="text-sm text-on-surface-variant max-w-xs mx-auto">Former Olympic strength coach with a focus on longevity biomechanics.</p>
+      </div>
+      <div class="text-center group ws-reveal ws-d3">
+        <div class="relative w-48 h-48 mx-auto mb-6">
+          <div class="absolute inset-0 bg-primary rotate-6 rounded-3xl group-hover:rotate-0 transition-transform duration-300"></div>
+          <img class="relative w-full h-full object-cover rounded-3xl border-4 border-surface shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnBIpNCB9MxVQERBIsbJf99UN5B4hsglVgiYyO62TdWldgeFLFyMhKKDIrqyYiimfLZZGX0CyNzLOKXB-jgHxdmcY_kkmC3mzdwMlwu98hSbKFZ-oUwBIwWzqson8fFa_qhVh0sRjb_2DvtN7u0n3FOz_kXNoQUezki1CNWLFnWSJ-OgC6gDHhQWwBNTPBad0d6nrOuleYWmSWwoP-4F28y_J-1Q5ACvg43fxWxllupUNOBhtquHAPQjlW1c3VLAa-vL_9p2qVSF4"/>
+        </div>
+        <h4 class="text-xl font-bold text-primary">Sarah Jenkins</h4>
+        <p class="text-sm text-secondary font-semibold mb-2">Head of Clinical Nutrition</p>
+        <p class="text-sm text-on-surface-variant max-w-xs mx-auto">Specialist in gut microbiome restoration and inflammatory control.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing Section — ORIGINAL UNCHANGED -->
+<section class="py-24 px-6 bg-surface-container-low">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 ws-reveal">
+      <h2 class="text-4xl font-headline font-extrabold text-primary mb-4">Invest in Your Longevity</h2>
+      <p class="text-on-surface-variant">Tiered access to our sanctuary and science-led expertise.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-surface-container-lowest p-10 rounded-[2rem] shadow-sm border border-transparent hover:border-outline-variant transition-all ws-reveal ws-d1">
+        <h4 class="text-xl font-bold text-primary mb-2">Vitality Basic</h4>
+        <div class="mb-8"><span class="text-4xl font-extrabold text-primary">$199</span><span class="text-on-surface-variant">/mo</span></div>
+        <ul class="space-y-4 mb-10">
+          <li class="flex gap-3 text-sm"><span class="material-symbols-outlined text-primary text-lg">check_circle</span> App Core Features</li>
+          <li class="flex gap-3 text-sm"><span class="material-symbols-outlined text-primary text-lg">check_circle</span> Community Forum Access</li>
+          <li class="flex gap-3 text-sm"><span class="material-symbols-outlined text-primary text-lg">check_circle</span> Monthly Webinar</li>
+        </ul>
+        <button class="w-full py-4 rounded-xl font-bold bg-surface-container-high text-primary hover:bg-surface-container-highest transition-colors">Select Plan</button>
+      </div>
+      <div class="bg-primary p-10 rounded-[2rem] shadow-2xl relative overflow-hidden scale-105 ws-reveal ws-d2">
+        <div class="absolute top-0 right-0 bg-secondary text-white text-[10px] font-bold px-4 py-1.5 uppercase tracking-widest rounded-bl-xl">Most Popular</div>
+        <h4 class="text-xl font-bold text-on-primary mb-2">The Sanctuary Pro</h4>
+        <div class="mb-8 text-on-primary"><span class="text-4xl font-extrabold">$499</span><span>/mo</span></div>
+        <ul class="space-y-4 mb-10 text-on-primary-container">
+          <li class="flex gap-3 text-sm"><span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">stars</span> Dedicated 1-on-1 Coach</li>
+          <li class="flex gap-3 text-sm"><span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">stars</span> Bloodwork Analysis</li>
+          <li class="flex gap-3 text-sm"><span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">stars</span> Weekly Protocol Adjustments</li>
+          <li class="flex gap-3 text-sm"><span class="material-symbols-outlined text-secondary-container text-lg" style="font-variation-settings: 'FILL' 1;">stars</span> Full App Feature Set</li>
+        </ul>
+        <button class="w-full py-4 rounded-xl font-bold bg-secondary text-white shadow-lg hover:opacity-90 transition-opacity">Start Pro Journey</button>
+      </div>
+      <div class="bg-surface-container-lowest p-10 rounded-[2rem] shadow-sm border border-transparent hover:border-outline-variant transition-all ws-reveal ws-d3">
+        <h4 class="text-xl font-bold text-primary mb-2">Elite Concierge</h4>
+        <div class="mb-8"><span class="text-4xl font-extrabold text-primary">$999</span><span class="text-on-surface-variant">/mo</span></div>
+        <ul class="space-y-4 mb-10">
+          <li class="flex gap-3 text-sm"><span class="material-symbols-outlined text-primary text-lg">check_circle</span> Physician-Led Team</li>
+          <li class="flex gap-3 text-sm"><span class="material-symbols-outlined text-primary text-lg">check_circle</span> Genetic (DNA) Profiling</li>
+          <li class="flex gap-3 text-sm"><span class="material-symbols-outlined text-primary text-lg">check_circle</span> Premium Wearables Bundle</li>
+          <li class="flex gap-3 text-sm"><span class="material-symbols-outlined text-primary text-lg">check_circle</span> 24/7 Priority Support</li>
+        </ul>
+        <button class="w-full py-4 rounded-xl font-bold bg-surface-container-high text-primary hover:bg-surface-container-highest transition-colors">Enquire Now</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Community Voice — ORIGINAL UNCHANGED -->
+<section class="py-24 px-6 bg-surface">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-4xl font-headline font-extrabold text-primary text-center mb-16 ws-reveal">The Community Voice</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-surface-container-lowest p-8 rounded-3xl shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow ws-reveal ws-d1">
+        <div class="flex gap-1 text-secondary mb-4">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+        </div>
+        <p class="text-on-surface-variant mb-8 italic">"WellSense didn't just give me a diet; they gave me a new biology. My HbA1c is lower than it was in my 20s."</p>
+        <div class="flex items-center gap-4">
+          <img class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3O4P5A6S7D8F9G0H1J2K3L4M5N6B7V8C9X0Z1"/>
+          <div>
+            <div class="font-bold text-primary text-sm">David S.</div>
+            <div class="text-xs text-on-surface-variant">Member since 2022</div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-surface-container-lowest p-8 rounded-3xl shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow ws-reveal ws-d2">
+        <div class="flex gap-1 text-secondary mb-4">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+        </div>
+        <p class="text-on-surface-variant mb-8 italic">"WellSense didn't just give me a diet; they gave me a new biology. My HbA1c is lower than it was in my 20s."</p>
+        <div class="flex items-center gap-4">
+          <img class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3O4P5A6S7D8F9G0H1J2K3L4M5N6B7V8C9X0Z1"/>
+          <div>
+            <div class="font-bold text-primary text-sm">David S.</div>
+            <div class="text-xs text-on-surface-variant">Member since 2022</div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-surface-container-lowest p-8 rounded-3xl shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow ws-reveal ws-d3">
+        <div class="flex gap-1 text-secondary mb-4">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+        </div>
+        <p class="text-on-surface-variant mb-8 italic">"WellSense didn't just give me a diet; they gave me a new biology. My HbA1c is lower than it was in my 20s."</p>
+        <div class="flex items-center gap-4">
+          <img class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3O4P5A6S7D8F9G0H1J2K3L4M5N6B7V8C9X0Z1"/>
+          <div>
+            <div class="font-bold text-primary text-sm">David S.</div>
+            <div class="text-xs text-on-surface-variant">Member since 2022</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- App Download Cinematic -->
+<section class="py-24 bg-surface-container-high overflow-hidden">
+<div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 items-center gap-20">
+<div class="relative">
+<div class="absolute -z-10 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl -top-20 -left-20"></div>
+<img class="w-full max-w-md mx-auto drop-shadow-2xl" data-alt="close-up of a high-end smartphone showing a health dashboard app with botanical accents, held by a hand in a sunlit room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIsRVFj4Ylnylb66pGgsrM2k-vS8RJWx0YcZPvicI1zqqTRYNhKjoFvhMTXqjYP_35xli-Q0mPtdGyZiQfeBLojVf5elt0W2rk7ekYL1CTbWmqTrrHK81d6B3Zkqg_vervi0JdyMDpVXpAUEOnEpq0Jh9DJIojuLJK4_x4KnjgUz3SFa5J2VegErAvf5hHoZgjren2XeBgaxZCHyEmWeL6gtR0_ibxUAqlvnqo9GVPMf4X6bwTHFZXU-cDSVgMMN0XTi3Td0MUkDs"/>
+</div>
+<div>
+<h2 class="text-4xl md:text-5xl font-headline font-extrabold text-primary mb-8">The Sanctuary <br/>in Your Pocket</h2>
+<p class="text-lg text-on-surface-variant mb-12">Carry your wellness ecosystem wherever you go. Our iOS and Android apps bring the expertise of our entire medical board to your fingertips.</p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-2xl flex items-center gap-3 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined">ios</span>
+<div class="text-left">
+<div class="text-[10px] uppercase font-bold opacity-70 leading-none">Download on the</div>
+<div class="text-lg font-bold leading-none">App Store</div>
+</div>
+</button>
+<button class="bg-primary text-on-primary px-8 py-4 rounded-2xl flex items-center gap-3 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined">play_arrow</span>
+<div class="text-left">
+<div class="text-[10px] uppercase font-bold opacity-70 leading-none">Get it on</div>
+<div class="text-lg font-bold leading-none">Google Play</div>
+</div>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- FAQ & Lifestyle Blog -->
+<section class="py-24 px-6 bg-surface">
+<div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20">
+<div>
+<h2 class="text-3xl font-headline font-extrabold text-primary mb-12">Frequently Asked</h2>
+<div class="space-y-4">
+<div class="bg-surface-container-low rounded-2xl p-6">
+<button class="flex items-center justify-between w-full font-bold text-primary">
+<span>How soon can I see results?</span>
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<div class="bg-surface-container-low rounded-2xl p-6">
+<button class="flex items-center justify-between w-full font-bold text-primary">
+<span>Is this suitable for vegans?</span>
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<div class="bg-surface-container-low rounded-2xl p-6">
+<button class="flex items-center justify-between w-full font-bold text-primary">
+<span>Do I need to buy supplements?</span>
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<div class="bg-surface-container-low rounded-2xl p-6">
+<button class="flex items-center justify-between w-full font-bold text-primary">
+<span>Can I pause my program?</span>
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+</div>
+<div>
+<h2 class="text-3xl font-headline font-extrabold text-primary mb-12">Latest from Sanctuary</h2>
+<div class="space-y-8">
+<div class="flex gap-6 items-center">
+<img class="w-24 h-24 rounded-2xl object-cover flex-shrink-0" data-alt="vibrant green matcha tea in a ceramic cup on a wooden surface with a soft linen cloth" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDcKndJzj_wFQgA403ptc6cJaHJJhRx13kZlYiwxc8dbR0HOmVFuZ_mEfGmi0-x0jwszXDV2x3Ht5zQ8zkZgZtHsTiEnaJkXKWf7awhDw4JY8biy_vLTHnbo7jnq-W-UOMPg32amGfiJAznRKYnNwc9uiSuzg034BAJ2QuIRhBUEJ5OlHVs6WYVvt6TtaRcYvetiwVWiY6g_Vr73Tqvw9NNj5_fCQ_BCglTjdn6BjAmfJKiBvy5fQzWoor5HC5OIMNw7EFWfZjBsg"/>
+<div>
+<h4 class="font-bold text-primary hover:text-secondary cursor-pointer transition-colors">The Gut-Brain Connection: 5 Foods to Boost Clarity</h4>
+<p class="text-xs text-on-surface-variant mt-2">March 12, 2024 • 5 min read</p>
+</div>
+</div>
+<div class="flex gap-6 items-center">
+<img class="w-24 h-24 rounded-2xl object-cover flex-shrink-0" data-alt="morning sun shining through a bedroom window onto a neatly made bed with white linens" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUejRFdjv26iSFmZrU_5FVIpRNWfVNs2rBULnZS-IWAv85mehjNMzS3pVt9GdPGo9LJ4CZgmjk-E_4OfGyEp4SoQlCTh87eCfLMNUJBkeo98FAFcAOW7u4CoXhw9ucESyHUk3NiWRioZXb8WqLyTKva5smjDyPIoriWoiCkwd-rOlaUnBY1AXDzJAKbrZC0XtREOo3we6hsP1AcxYl3SIqBFF1HNVmCe_um74kuuqHrvC5kUcLIyi2bDYEshp862L29l-y2FazWU0"/>
+<div>
+<h4 class="font-bold text-primary hover:text-secondary cursor-pointer transition-colors">Optimizing Your Circadian Rhythm for Deep Sleep</h4>
+<p class="text-xs text-on-surface-variant mt-2">March 08, 2024 • 8 min read</p>
+</div>
+</div>
+<div class="flex gap-6 items-center">
+<img class="w-24 h-24 rounded-2xl object-cover flex-shrink-0" data-alt="close-up of fresh organic ginger and turmeric roots on a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDirKybwoPZKlniYB_RXuEo574T_Wrvd8v9bTfrgE6Fw6-iRIaqUqj8apGDJIdqwmqfo3sBq1pBVOBVX5jcY_JoNtfmdylRBppNy_zdStBmF4ay-xgfMnYyrPpjnNyi-B950b--n6rOgKoaE4FtVGQDHZR0NnvsgayrkrIGbEaGaM_PKZOHaB2FZlHMTaA5Ucg--dQiB68oX8ZOMx3OQZUPJbkLtqyrk3xQKdp6QrbTckxLQyGhzoSH_xgFVRrikj7UXCWHurJYABI"/>
+<div>
+<h4 class="font-bold text-primary hover:text-secondary cursor-pointer transition-colors">Natural Anti-Inflammatories That Actually Work</h4>
+<p class="text-xs text-on-surface-variant mt-2">March 01, 2024 • 4 min read</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact Form Section -->
+<section class="py-24 px-6 bg-surface-container-low">
+<div class="max-w-4xl mx-auto bg-surface-container-lowest p-12 md:p-16 rounded-[3rem] shadow-xl border border-white/50">
+<div class="text-center mb-12">
+<h2 class="text-3xl md:text-4xl font-headline font-extrabold text-primary mb-4">Talk to a Wellness Expert</h2>
+<p class="text-on-surface-variant">Tell us your health goals, and we'll help you pick the right sanctuary.</p>
+</div>
+<form class="grid md:grid-cols-2 gap-8">
+<div class="space-y-1">
+<label class="text-xs font-bold text-secondary uppercase tracking-widest pl-2">Full Name</label>
+<input class="w-full bg-surface-container-low border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary/40 focus:bg-white transition-all text-on-surface" placeholder="Elena Rossi" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-bold text-secondary uppercase tracking-widest pl-2">Email Address</label>
+<input class="w-full bg-surface-container-low border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary/40 focus:bg-white transition-all text-on-surface" placeholder="elena@example.com" type="email"/>
+</div>
+<div class="md:col-span-2 space-y-1">
+<label class="text-xs font-bold text-secondary uppercase tracking-widest pl-2">Your Goals</label>
+<select class="w-full bg-surface-container-low border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary/40 focus:bg-white transition-all text-on-surface">
+<option>Sustainable Fat Loss</option>
+<option>Diabetes/Hormonal Support</option>
+<option>General Longevity</option>
+<option>Performance Optimization</option>
+</select>
+</div>
+<div class="md:col-span-2 space-y-1">
+<label class="text-xs font-bold text-secondary uppercase tracking-widest pl-2">Message</label>
+<textarea class="w-full bg-surface-container-low border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary/40 focus:bg-white transition-all text-on-surface" placeholder="How can we help you achieve your goals?" rows="4"></textarea>
+</div>
+<div class="md:col-span-2">
+<button class="w-full py-5 rounded-2xl bg-primary text-on-primary font-bold text-lg shadow-lg hover:opacity-90 transition-all">Submit Enquiry</button>
+</div>
+</form>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-stone-100 dark:bg-stone-950 w-full rounded-t-3xl">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 px-12 py-16 max-w-7xl mx-auto font-['Plus_Jakarta_Sans'] text-sm">
+<div class="col-span-2 md:col-span-1">
+<div class="text-xl font-bold text-green-900 dark:text-green-50 mb-6">WellSense</div>
+<p class="text-stone-500 dark:text-stone-400 leading-relaxed mb-6">Redefining health tech through botanical wisdom and precision science.</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-stone-500 hover:text-secondary cursor-pointer transition-colors">public</span>
+<span class="material-symbols-outlined text-stone-500 hover:text-secondary cursor-pointer transition-colors">alternate_email</span>
+<span class="material-symbols-outlined text-stone-500 hover:text-secondary cursor-pointer transition-colors">smart_display</span>
+</div>
+</div>
+<div>
+<h5 class="font-bold text-green-900 dark:text-green-50 mb-6">Quick Navigation</h5>
+<ul class="space-y-4 text-stone-500 dark:text-stone-400">
+<li><a class="hover:text-terracotta-600 dark:hover:text-terracotta-400 transition-colors duration-200" href="#">Home</a></li>
+<li><a class="hover:text-terracotta-600 dark:hover:text-terracotta-400 transition-colors duration-200" href="#">Programs</a></li>
+<li><a class="hover:text-terracotta-600 dark:hover:text-terracotta-400 transition-colors duration-200" href="#">Success Stories</a></li>
+<li><a class="hover:text-terracotta-600 dark:hover:text-terracotta-400 transition-colors duration-200" href="#">The Team</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-green-900 dark:text-green-50 mb-6">Legal</h5>
+<ul class="space-y-4 text-stone-500 dark:text-stone-400">
+<li><a class="hover:text-terracotta-600 dark:hover:text-terracotta-400 transition-colors duration-200" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-terracotta-600 dark:hover:text-terracotta-400 transition-colors duration-200" href="#">Terms of Service</a></li>
+<li><a class="hover:text-terracotta-600 dark:hover:text-terracotta-400 transition-colors duration-200" href="#">Cookie Policy</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-green-900 dark:text-green-50 mb-6">App Downloads</h5>
+<ul class="space-y-4 text-stone-500 dark:text-stone-400">
+<li><a class="hover:text-terracotta-600 dark:hover:text-terracotta-400 transition-colors duration-200" href="#">iOS Store</a></li>
+<li><a class="hover:text-terracotta-600 dark:hover:text-terracotta-400 transition-colors duration-200" href="#">Google Play Store</a></li>
+<li><a class="hover:text-terracotta-600 dark:hover:text-terracotta-400 transition-colors duration-200" href="#">Web Dashboard</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-12 py-8 border-t border-stone-200 dark:border-stone-800 text-center text-xs text-stone-400">
+            © 2024 WellSense Community. All rights reserved.
+        </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════
+     ANIMATION ENGINE — pure JS, no layout touches
+     ═══════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── 1. Scroll progress bar ── */
+  const progressBar = document.getElementById('ws-progress');
+  function setProgress() {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = total > 0 ? (window.scrollY / total * 100) + '%' : '0%';
+  }
+
+  /* ── 2. Sticky nav enhancement ── */
+  const nav = document.getElementById('ws-nav');
+  function updateNav() {
+    nav.classList.toggle('ws-scrolled', window.scrollY > 50);
+  }
+
+  /* ── 3. Hero parallax ── */
+  const heroImg = document.getElementById('ws-hero-img');
+  function parallax() {
+    if (heroImg && window.scrollY < window.innerHeight * 1.2) {
+      heroImg.style.transform = 'scale(1.08) translateY(' + (window.scrollY * 0.15) + 'px)';
+    }
+  }
+
+  /* ── 4. Scroll-reveal (IntersectionObserver) ── */
+  const revealEls = document.querySelectorAll('.ws-reveal');
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('ws-visible');
+        // Also trigger list stagger if inside revealed parent
+        e.target.querySelectorAll('.ws-list-stagger').forEach(l => l.classList.add('ws-visible'));
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -44px 0px' });
+  revealEls.forEach(el => revealObs.observe(el));
+
+  /* List staggers that are direct targets also need observer */
+  document.querySelectorAll('.ws-list-stagger').forEach(el => {
+    const listObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('ws-visible'); listObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    listObs.observe(el);
+  });
+
+  /* ── 5. Animated counters ── */
+  const counters = document.querySelectorAll('.ws-counter');
+  const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = +el.dataset.target;
+      const suffix = el.dataset.suffix || '';
+      const dur = 1600, step = 14;
+      const inc = target / (dur / step);
+      let cur = 0;
+      const t = setInterval(() => {
+        cur = Math.min(cur + inc, target);
+        el.textContent = Math.round(cur) + suffix;
+        if (cur >= target) clearInterval(t);
+      }, step);
+      counterObs.unobserve(el);
+    });
+  }, { threshold: 0.6 });
+  counters.forEach(el => counterObs.observe(el));
+
+  /* ── 6. Progress bar fills ── */
+  const pbars = document.querySelectorAll('.ws-progress-bar');
+  const pbarObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('ws-filled');
+        pbarObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  pbars.forEach(el => pbarObs.observe(el));
+
+  /* ── 7. Cursor glow (desktop only) ── */
+  const cursor = document.getElementById('ws-cursor');
+  let mx = 0, my = 0, cx = 0, cy = 0;
+  if (window.matchMedia('(hover: hover)').matches) {
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function raf() {
+      cx += (mx - cx) * 0.09;
+      cy += (my - cy) * 0.09;
+      cursor.style.left = cx + 'px';
+      cursor.style.top  = cy + 'px';
+      requestAnimationFrame(raf);
+    })();
+  }
+
+  /* ── 8. Throttled scroll handler ── */
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        setProgress();
+        updateNav();
+        parallax();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  /* Initial call */
+  setProgress();
+  updateNav();
+}());
+</script>
+</body>
+</html>
